@@ -37,7 +37,30 @@ body{
 .enemy{
     width:50px;
     height:90px;
-    background:red;
+    background:linear-gradient(to bottom,#ff4444,#990000);
+border:2px solid white;
+box-shadow:0 0 10px red;
+    .enemy::before{
+content:'';
+position:absolute;
+width:20px;
+height:25px;
+background:#87ceeb;
+left:15px;
+top:10px;
+border-radius:5px;
+}
+
+.enemy::after{
+content:'';
+position:absolute;
+width:30px;
+height:10px;
+background:#333;
+left:10px;
+bottom:10px;
+border-radius:5px;
+}
     position:absolute;
     top:-100px;
     border-radius:10px;
@@ -61,6 +84,8 @@ button{
 
 <h2>🚗 Racing Game</h2>
     <h2>Score: <span id="score">0</span></h2>
+    <h2>Coins: <span id="coins">0</span></h2>
+    <h2>Level: <span id="level">1</span></h2>
 <h2>High Score: <span id="highScore">0</span></h2>
 
 <div id="game">
@@ -75,6 +100,7 @@ button{
 <script>
 const player = document.getElementById("player");
     let score = 0;
+    let coins = 0;
 
 let highScore =
 localStorage.getItem("highScore") || 0;
@@ -134,6 +160,11 @@ function createEnemy(){
 setInterval(function(){
 
 score++;
+    
+    if(score % 10 === 0){
+    coins++;
+    document.getElementById("coins").innerText = coins;
+    }
 
 document.getElementById("score").innerText = score;
 
@@ -143,7 +174,23 @@ highScore = score;
 
 localStorage.setItem(
 "highScore",
-highScore
+highScoreif(score >= 50){
+    level = 2;
+}
+
+if(score >= 100){
+    level = 3;
+}
+
+if(score >= 200){
+    level = 4;
+}
+
+if(score >= 500){
+    level = 5;
+}
+
+document.getElementById("level").innerText = level;
 );
 
 document.getElementById("highScore").innerText =
