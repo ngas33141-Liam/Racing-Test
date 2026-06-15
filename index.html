@@ -2,21 +2,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Racing Game</title>
+
 <style>
 body{
     margin:0;
-    overflow:hidden;
     background:#222;
+    overflow:hidden;
+    text-align:center;
+    color:white;
+    font-family:Arial;
 }
+
 #game{
     width:300px;
-    height:600px;
+    height:500px;
     background:#555;
     margin:auto;
     position:relative;
     overflow:hidden;
 }
+
 #player{
     width:50px;
     height:90px;
@@ -26,6 +33,7 @@ body{
     left:125px;
     border-radius:10px;
 }
+
 .enemy{
     width:50px;
     height:90px;
@@ -34,62 +42,89 @@ body{
     top:-100px;
     border-radius:10px;
 }
+
+.controls{
+    margin-top:15px;
+}
+
+button{
+    font-size:30px;
+    padding:15px 30px;
+    margin:10px;
+    border:none;
+    border-radius:15px;
+}
 </style>
 </head>
+
 <body>
+
+<h2>🚗 Racing Game</h2>
 
 <div id="game">
     <div id="player"></div>
 </div>
 
+<div class="controls">
+    <button onclick="moveLeft()">⬅️</button>
+    <button onclick="moveRight()">➡️</button>
+</div>
+
 <script>
 const player = document.getElementById("player");
-const game = document.getElementById("game");
 
-let playerX = 125;
+let lanes = [25, 125, 225];
+let currentLane = 1;
 
-document.addEventListener("keydown", e=>{
-    if(e.key==="ArrowLeft" && playerX>25){
-        playerX -= 50;
+function moveLeft(){
+    if(currentLane > 0){
+        currentLane--;
+        player.style.left = lanes[currentLane] + "px";
     }
-    if(e.key==="ArrowRight" && playerX<225){
-        playerX += 50;
+}
+
+function moveRight(){
+    if(currentLane < 2){
+        currentLane++;
+        player.style.left = lanes[currentLane] + "px";
     }
-    player.style.left = playerX + "px";
-});
+}
 
 function createEnemy(){
     const enemy = document.createElement("div");
-    enemy.classList.add("enemy");
-    enemy.style.left = [25,75,125,175,225][Math.floor(Math.random()*5)]+"px";
-    game.appendChild(enemy);
+    enemy.className = "enemy";
+
+    let lane = Math.floor(Math.random()*3);
+    enemy.style.left = lanes[lane] + "px";
+
+    document.getElementById("game").appendChild(enemy);
 
     let y = -100;
 
-    const move = setInterval(()=>{
-        y += 5;
-        enemy.style.top = y+"px";
+    let move = setInterval(function(){
 
-        let px = player.offsetLeft;
-        let py = player.offsetTop;
+        y += 5;
+        enemy.style.top = y + "px";
 
         if(
-            y+90 > py &&
-            y < py+90 &&
-            enemy.offsetLeft === px
+            y + 90 > 390 &&
+            lane == currentLane
         ){
-            alert("Game Over!");
+            clearInterval(move);
+            alert("💥 Game Over!");
             location.reload();
         }
 
-        if(y > 600){
+        if(y > 500){
             enemy.remove();
             clearInterval(move);
         }
+
     },20);
 }
 
 setInterval(createEnemy,1000);
+
 </script>
 
 </body>
