@@ -60,6 +60,8 @@ button{
 <body>
 
 <h2>🚗 Racing Game</h2>
+    <h2>Score: <span id="score">0</span></h2>
+<h2>High Score: <span id="highScore">0</span></h2>
 
 <div id="game">
     <div id="player"></div>
@@ -72,6 +74,13 @@ button{
 
 <script>
 const player = document.getElementById("player");
+    let score = 0;
+
+let highScore =
+localStorage.getItem("highScore") || 0;
+
+document.getElementById("highScore").innerText =
+highScore;
 
 let lanes = [25, 125, 225];
 let currentLane = 1;
@@ -122,7 +131,27 @@ function createEnemy(){
 
     },20);
 }
+setInterval(function(){
 
+score++;
+
+document.getElementById("score").innerText = score;
+
+if(score > highScore){
+
+highScore = score;
+
+localStorage.setItem(
+"highScore",
+highScore
+);
+
+document.getElementById("highScore").innerText =
+highScore;
+
+}
+
+},1000);
 setInterval(createEnemy,1000);
 
 </script>
