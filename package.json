@@ -1,0 +1,15 @@
+{
+  "name": "racing-test",
+  "version": "1.0.0",
+  "description": "Racing Game with Vercel Analytics",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": ["racing", "game"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.1.1"
+  }
+}
