@@ -101,14 +101,14 @@ button{
 const player = document.getElementById("player");
     let score = 0;
     let coins = 0;
+    let level = 1;
 
 let highScore =
 localStorage.getItem("highScore") || 0;
+    
+    let enemySpeed = 2;
 
-document.getElementById("highScore").innerText =
-highScore;
-
-let lanes = [25, 125, 225];
+    let lanes = [25, 125, 225];
 let currentLane = 1;
 
 function moveLeft(){
