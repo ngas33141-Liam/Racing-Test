@@ -23,7 +23,67 @@ body{
     position:relative;
     overflow:hidden;
 }
+body{
+    margin:0;
+    background:#222;
+    overflow:hidden;
+    text-align:center;
+    color:white;
+    font-family:Arial;
+}
 
+#game{
+    width:300px;
+    height:500px;
+    background:#555;
+    margin:auto;
+    position:relative;
+    overflow:hidden;
+}
+
+#player{
+    width:50px;
+    height:90px;
+    background:cyan;
+    position:absolute;
+    bottom:20px;
+    left:125px;
+    border-radius:10px;
+}
+
+.enemy{
+    width:50px;
+    height:90px;
+    position:absolute;
+    top:-100px;
+    border-radius:10px;
+    border:2px solid white;
+    box-shadow:0 0 10px red;
+}
+
+.enemy.car1{
+    background:linear-gradient(to bottom,#ff4444,#990000);
+}
+
+.enemy.car2{
+    background:linear-gradient(to bottom,#ffcc00,#cc6600);
+}
+
+.enemy.car3{
+    background:linear-gradient(to bottom,#66ff66,#009900);
+}
+
+.car1{ background:cyan; }
+.car2{ background:yellow; }
+.car3{ background:lime; }
+
+button{
+    font-size:30px;
+    padding:15px 30px;
+    margin:10px;
+    border:none;
+    border-radius:15px;
+}
 #player{
     width:50px;
     height:90px;
