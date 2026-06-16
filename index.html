@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Super Racing Game - Power Ups</title>
+<title>Super Racing Game - Rankings Edition</title>
 
 <style>
 body {
@@ -52,147 +52,97 @@ h2 {
     transition: left 0.15s ease;
     box-shadow: 0 5px 10px rgba(0,0,0,0.4);
 }
-
 .car-design::before {
-    content: '';
-    position: absolute;
-    width: 36px;
-    height: 22px;
-    background: rgba(135, 206, 235, 0.85);
-    left: 7px;
-    top: 22px;
-    border-radius: 4px;
-    z-index: 2;
+    content: ''; position: absolute; width: 36px; height: 22px;
+    background: rgba(135, 206, 235, 0.85); left: 7px; top: 22px; border-radius: 4px; z-index: 2;
 }
-
 .car-design::after {
-    content: '';
-    position: absolute;
-    width: 8px;
-    height: 6px;
-    background: #fffb00;
-    left: 6px;
-    top: 2px;
-    border-radius: 2px;
-    box-shadow: 30px 0 0 #fffb00;
+    content: ''; position: absolute; width: 8px; height: 6px;
+    background: #fffb00; left: 6px; top: 2px; border-radius: 2px; box-shadow: 30px 0 0 #fffb00;
 }
-
 .wheels {
-    position: absolute;
-    width: 6px;
-    height: 14px;
-    background: #111;
-    border-radius: 2px;
-    left: -4px;
-    top: 15px;
-    box-shadow: 52px 0 0 #111, 0 50px 0 #111, 52px 50px 0 #111;
-    z-index: 1;
+    position: absolute; width: 6px; height: 14px; background: #111; border-radius: 2px;
+    left: -4px; top: 15px; box-shadow: 52px 0 0 #111, 0 50px 0 #111, 52px 50px 0 #111; z-index: 1;
 }
 
 .car1 { background: linear-gradient(to bottom, #4facfe, #00f2fe); }
 .car2 { background: linear-gradient(to bottom, #ff8c00, #fff700); }
 .car3 { background: linear-gradient(to bottom, #e100ff, #7f00ff); }
+.enemy { background: linear-gradient(to bottom, #ff4444, #990000); transform: rotate(180deg); }
 
-.enemy {
-    background: linear-gradient(to bottom, #ff4444, #990000);
-    transform: rotate(180deg);
-}
+.has-shield { box-shadow: 0 0 20px #00f2fe, 0 0 40px #00f2fe !important; border: 2px solid #00f2fe; }
+.has-boost { box-shadow: 0 0 20px #00ff87, 0 0 40px #00ff87 !important; }
 
-/* 🛡️ Shield ကာကွယ်မှုရနေချိန် ပတ်ပတ်လည် အလင်းဝိုင်း */
-.has-shield {
-    box-shadow: 0 0 20px #00f2fe, 0 0 40px #00f2fe !important;
-    border: 2px solid #00f2fe;
-}
-
-/* 🚀 Boost ရနေချိန် မီးတောက်အလင်း */
-.has-boost {
-    box-shadow: 0 0 20px #00ff87, 0 0 40px #00ff87 !important;
-}
-
-/* Power Up ပစ္စည်းများ */
+/* Power Up */
 .powerup {
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    top: -50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: 0 0 10px #fff;
-    animation: pulse 0.5s infinite alternate;
+    width: 30px; height: 30px; position: absolute; top: -50px; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center; font-size: 16px;
+    box-shadow: 0 0 10px #fff; animation: pulse 0.5s infinite alternate;
 }
-
-@keyframes pulse {
-    from { transform: scale(0.9); }
-    to { transform: scale(1.1); }
-}
-
+@keyframes pulse { from { transform: scale(0.9); } to { transform: scale(1.1); } }
 .p-shield { background: #00f2fe; border: 2px solid #fff; }
 .p-boost { background: #00ff87; border: 2px solid #fff; }
 
 /* Controls */
 .controls { margin-top: 10px; }
 button.btn-ctrl {
-    font-size: 20px;
-    padding: 12px 25px;
-    margin: 5px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #fff;
-    color: #222;
-    font-weight: bold;
-    box-shadow: 0 4px #999;
+    font-size: 20px; padding: 12px 25px; margin: 5px; border: none; border-radius: 10px;
+    cursor: pointer; background-color: #fff; color: #222; font-weight: bold; box-shadow: 0 4px #999;
 }
-button.btn-ctrl:active {
-    box-shadow: 0 1px #666;
-    transform: translateY(3px);
+button.btn-ctrl:active { box-shadow: 0 1px #666; transform: translateY(3px); }
+
+/* Container သစ်များ (Shop & Leaderboard တွဲလျက်ပြရန်) */
+.flex-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 10px;
 }
 
-/* Shop */
-.shop-container {
-    max-width: 400px;
-    margin: 20px auto;
+.shop-container, .leaderboard-container {
+    flex: 1;
+    min-width: 300px;
     background: #2a2a2a;
     padding: 15px;
     border-radius: 12px;
     border: 2px solid #444;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
+
 .shop-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #3a3a3a;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: #3a3a3a; margin: 8px 0; padding: 10px; border-radius: 8px;
 }
-.preview-car {
-    width: 30px;
-    height: 50px;
-    border-radius: 5px;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}
-.preview-car::before {
-    content: ''; position: absolute; width: 20px; height: 10px;
-    background: rgba(255,255,255,0.5); left: 5px; top: 12px; border-radius: 2px;
-}
-.btn-shop {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    min-width: 80px;
-}
+.preview-car { width: 30px; height: 50px; border-radius: 5px; position: relative; display: inline-block; vertical-align: middle; }
+.preview-car::before { content: ''; position: absolute; width: 20px; height: 10px; background: rgba(255,255,255,0.5); left: 5px; top: 12px; border-radius: 2px; }
+.btn-shop { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; min-width: 80px; }
 .owned { background-color: #4CAF50; color: white; }
 .equip { background-color: #008CBA; color: white; }
 .locked { background-color: #f44336; color: white; }
+
+/* Leaderboard Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+th { background-color: #222; color: #60efff; font-weight: bold; }
+tr:nth-child(even) { background-color: #3a3a3a; }
+.current-player-row {
+    background-color: rgba(0, 255, 135, 0.2) !important;
+    font-weight: bold;
+    color: #00ff87;
+}
 </style>
 </head>
 
@@ -200,6 +150,7 @@ button.btn-ctrl:active {
 
 <h2>🚗 Super Racing Game</h2>
 <div class="stats-container">
+    Driver: <span id="playerNameDisplay" style="color: #ff8c00; font-weight:bold;">Player</span> |
     Score: <span id="score" style="color: #00ff87; font-weight:bold;">0</span> | 
     🪙 Coins: <span id="coins" style="color: #ffd700; font-weight:bold;">0</span> | 
     Level: <span id="level" style="color: #60efff; font-weight:bold;">1</span>
@@ -221,30 +172,47 @@ button.btn-ctrl:active {
     <button class="btn-ctrl" onclick="moveRight()">➡️</button>
 </div>
 
-<div class="shop-container">
-    <h3>🛒 Car Shop (ကားအရောင်းဆိုင်)</h3>
-    <div class="shop-item">
-        <div>
-            <div class="preview-car car1"></div>
-            <span style="margin-left: 10px;">Classic Blue</span>
+<div class="flex-container">
+    <div class="shop-container">
+        <h3>🛒 Car Shop (ကားဆိုင်)</h3>
+        <div class="shop-item">
+            <div>
+                <div class="preview-car car1"></div>
+                <span style="margin-left: 10px;">Classic Blue</span>
+            </div>
+            <button id="shop-btn-1" class="btn-shop equip" onclick="buyOrEquip(1)">Equipped</button>
         </div>
-        <button id="shop-btn-1" class="btn-shop equip" onclick="buyOrEquip(1)">Equipped</button>
+        <div class="shop-item">
+            <div>
+                <div class="preview-car car2"></div>
+                <span style="margin-left: 10px;">Fire Orange</span>
+            </div>
+            <span style="color: #ffd700;" id="price-2">🪙 15</span>
+            <button id="shop-btn-2" class="btn-shop locked" onclick="buyOrEquip(2)">Buy</button>
+        </div>
+        <div class="shop-item">
+            <div>
+                <div class="preview-car car3"></div>
+                <span style="margin-left: 10px;">Neon Purple</span>
+            </div>
+            <span style="color: #ffd700;" id="price-3">🪙 30</span>
+            <button id="shop-btn-3" class="btn-shop locked" onclick="buyOrEquip(3)">Buy</button>
+        </div>
     </div>
-    <div class="shop-item">
-        <div>
-            <div class="preview-car car2"></div>
-            <span style="margin-left: 10px;">Fire Orange</span>
-        </div>
-        <span style="color: #ffd700;" id="price-2">🪙 15</span>
-        <button id="shop-btn-2" class="btn-shop locked" onclick="buyOrEquip(2)">Buy</button>
-    </div>
-    <div class="shop-item">
-        <div>
-            <div class="preview-car car3"></div>
-            <span style="margin-left: 10px;">Neon Purple</span>
-        </div>
-        <span style="color: #ffd700;" id="price-3">🪙 30</span>
-        <button id="shop-btn-3" class="btn-shop locked" onclick="buyOrEquip(3)">Buy</button>
+
+    <div class="leaderboard-container">
+        <h3>🏆 Player Rankings (အဆင့်ဇယား)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>High Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                </tbody>
+        </table>
     </div>
 </div>
 
@@ -253,15 +221,22 @@ const player = document.getElementById("player");
 const gameArea = document.getElementById("game");
 const powerStatus = document.getElementById("power-status");
 
+// Player Name သတ်မှတ်ခြင်း စနစ်
+let playerName = localStorage.getItem("gamePlayerName");
+if (!playerName) {
+    playerName = prompt("Enter your Name (လူကြီးမင်းနာမည် ထည့်ပါ):") || "Guest_Player";
+    localStorage.setItem("gamePlayerName", playerName);
+}
+document.getElementById("playerNameDisplay").innerText = playerName;
+
 let score = 0;
 let coins = parseInt(localStorage.getItem("gameCoins")) || 0;
 let level = 1;
 let enemySpeed = 5;
 let gamePaused = false;
 let gameOver = false;
-let highScore = localStorage.getItem("highScore") || 0;
+let highScore = parseInt(localStorage.getItem("highScore")) || 0;
 
-// Power-Up States
 let isShielded = false;
 let isBoosted = false;
 
@@ -275,6 +250,15 @@ player.style.left = lanes[currentLane] + "px";
 let carOwnership = JSON.parse(localStorage.getItem("carOwnership")) || { 1: true, 2: false, 3: false };
 let activeCar = parseInt(localStorage.getItem("activeCar")) || 1;
 let carPrices = { 1: 0, 2: 15, 3: 30 };
+
+// Leaderboard Data စနစ် (Multiplayer ပုံစံ Bot များပါဝင်သည်)
+let initialRankings = [
+    { name: "Aung Aung 🇲🇲", score: 250 },
+    { name: "Thinzar ✨", score: 180 },
+    { name: "Kaung Kaung 🔥", score: 90 },
+    { name: "Sithu_Turbo", score: 40 }
+];
+let rankings = JSON.parse(localStorage.getItem("gameRankings")) || initialRankings;
 
 function moveLeft(){
     if(!gamePaused && !gameOver && currentLane > 0){
@@ -347,7 +331,47 @@ function updateShopUI() {
     }
 }
 
-// ရန်သူ့ကား စနစ်
+// 🏆 Rankings ဇယားကို Update လုပ်ပေးမည့် Function
+function updateLeaderboardUI() {
+    // လက်ရှိကစားသမားရဲ့ အမြင့်ဆုံးရမှတ်ကို ထည့်သွင်းတွက်ချက်ရန်
+    let allPlayers = [...rankings];
+    let found = allPlayers.find(p => p.name === playerName);
+    if (found) {
+        if (highScore > found.score) found.score = highScore;
+    } else {
+        allPlayers.push({ name: playerName, score: highScore });
+    }
+
+    // Score အများဆုံးကနေ အနည်းဆုံးကို စီရီစဉ်ခြင်း
+    allPlayers.sort((a, b) => b.score - a.score);
+    
+    // Top 5 သာ ဇယားမှာပြမည်
+    let top5 = allPlayers.slice(0, 5);
+    
+    // ဇယားထဲသို့ HTML ထည့်သွင်းခြင်း
+    const tbody = document.getElementById("leaderboard-body");
+    tbody.innerHTML = "";
+    
+    top5.forEach((playerData, index) => {
+        let row = document.createElement("tr");
+        if (playerData.name === playerName) {
+            row.className = "current-player-row"; // ကိုယ့်နာမည်ဆိုရင် အရောင်လင်းစေရန်
+        }
+        
+        let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
+        
+        row.innerHTML = `
+            <td>${medal}</td>
+            <td>${playerData.name}</td>
+            <td>${playerData.score}</td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // ဒေတာအသစ်ကို သိမ်းဆည်းထားမည်
+    localStorage.setItem("gameRankings", JSON.stringify(allPlayers.filter(p => p.name !== playerName)));
+}
+
 function createEnemy(){
     if(gamePaused || gameOver) return; 
 
@@ -370,10 +394,8 @@ function createEnemy(){
         y += enemySpeed;
         enemy.style.top = y + "px";
 
-        // Collision Check
         if(y + 90 > 390 && y < 480 && lane === currentLane){
             if(isShielded) {
-                // ဒိုင်းရှိရင် မသေပါ၊ ဒိုင်းပဲကွဲသွားမယ်
                 isShielded = false;
                 player.classList.remove("has-shield");
                 powerStatus.innerText = "";
@@ -384,7 +406,15 @@ function createEnemy(){
             
             gameOver = true;
             clearInterval(move);
+            
+            // သေဆုံးချိန်တွင် စံချိန်သစ်တင်နိုင်က ဇယားကို ချက်ချင်း Update လုပ်မည်
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem("highScore", highScore);
+            }
             localStorage.setItem("gameCoins", coins);
+            updateLeaderboardUI();
+
             setTimeout(() => {
                 alert("💥 Game Over! Your Score: " + score);
                 location.reload();
@@ -395,11 +425,8 @@ function createEnemy(){
     }, 20);
 }
 
-// Power Ups ပစ္စည်းများ ထွက်လာစေခြင်း
 function spawnPowerUp() {
     if(gamePaused || gameOver) return;
-
-    // ၄၀ ရာခိုင်နှုန်းပဲ ပစ္စည်းကျဖို့ Chance ထားပါတယ်
     if(Math.random() > 0.4) return;
 
     const pUp = document.createElement("div");
@@ -409,7 +436,7 @@ function spawnPowerUp() {
     pUp.innerText = type === "shield" ? "🛡️" : "⚡";
     
     let lane = Math.floor(Math.random() * 3);
-    pUp.style.left = (lanes[lane] + 10) + "px"; // အလယ်တည့်တည့်ကျအောင် +10 လုပ်ထားတယ်
+    pUp.style.left = (lanes[lane] + 10) + "px";
     gameArea.appendChild(pUp);
 
     let y = -50;
@@ -417,10 +444,9 @@ function spawnPowerUp() {
         if(gameOver) { clearInterval(movePUp); pUp.remove(); return; }
         if(gamePaused) return;
 
-        y += 6; // Power up ကျလာမယ့် အရှိန်
+        y += 6;
         pUp.style.top = y + "px";
 
-        // ကစားသမားနဲ့ ကောက်မိမလား စစ်ခြင်း
         if(y + 30 > 390 && y < 480 && lane === currentLane) {
             clearInterval(movePUp);
             pUp.remove();
@@ -431,7 +457,6 @@ function spawnPowerUp() {
     }, 20);
 }
 
-// Power Up စွမ်းရည် စတင်အသုံးပြုခြင်း
 function activatePowerUp(type) {
     if(type === "shield") {
         isShielded = true;
@@ -447,7 +472,7 @@ function activatePowerUp(type) {
                 player.classList.remove("has-shield");
                 powerStatus.innerText = "";
             }
-        }, 5000); // ၅ စက္ကန့် ခံမယ်
+        }, 5000);
     } else {
         isBoosted = true;
         isShielded = false;
@@ -462,20 +487,15 @@ function activatePowerUp(type) {
                 player.classList.remove("has-boost");
                 powerStatus.innerText = "";
             }
-        }, 3000); // ၃ စက္ကန့် ခံမယ်
+        }, 3000);
     }
 }
 
-// ရမှတ်နှင့် Level တွက်ချက်ခြင်း စနစ်
+// Score Loop
 setInterval(function(){
     if(gamePaused || gameOver) return;
 
-    // Boost ရနေရင် ရမှတ် ၅ ဆ ပိုတက်မယ်
-    if(isBoosted) {
-        score += 5;
-    } else {
-        score++;
-    }
+    if(isBoosted) { score += 5; } else { score++; }
 
     if(score % 10 === 0){
         coins++;
@@ -500,19 +520,21 @@ setInterval(function(){
 
 }, 1000);
 
-// ကွန်ပျူတာ Keyboard က မြှားခလုတ်တွေနဲ့ ဆော့လို့ရအောင်ပါ တစ်ခါတည်း ထည့်ပေးထားပါတယ် ⌨️
 window.addEventListener("keydown", function(e) {
     if(e.key === "ArrowLeft" || e.key === "a" || e.key === "A") moveLeft();
     if(e.key === "ArrowRight" || e.key === "d" || e.key === "D") moveRight();
-    if(e.key === " ") pauseGame(); // Spacebar နှိပ်ရင် Pause ဖြစ်မယ်
+    if(e.key === " ") pauseGame();
 });
 
+// စတင်ပွင့်ချိန်တွင် ဇယားကိုဆွဲမည်
 updateShopUI();
 updatePlayerCar();
+updateLeaderboardUI();
+
 setInterval(createEnemy, 1200);
-setInterval(spawnPowerUp, 4000); // ၄ စက္ကန့်တစ်ခါ Item ကျမကျ စစ်မယ်
+setInterval(spawnPowerUp, 4000);
 </script>
 
 </body>
-</html>
+    </html>
 
