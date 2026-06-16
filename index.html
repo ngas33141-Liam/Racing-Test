@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Super Racing Game</title>
+<title>Super Racing Game - Power Ups</title>
 
 <style>
 body {
@@ -34,7 +34,6 @@ h2 {
     width: 300px;
     height: 500px;
     background: #444;
-    /* လမ်းမကြီးပေါ်က ဖြူပြာလိုင်းများ */
     background-image: linear-gradient(90deg, transparent 33%, rgba(255,255,255,0.2) 33%, rgba(255,255,255,0.2) 35%, transparent 35%, transparent 66%, rgba(255,255,255,0.2) 66%, rgba(255,255,255,0.2) 68%, transparent 68%);
     margin: 10px auto;
     position: relative;
@@ -44,7 +43,7 @@ h2 {
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
-/* ကားများ၏ အခြေခံဒီဇိုင်း (Detail) */
+/* ကားဒီဇိုင်းများ */
 .car-design {
     width: 50px;
     height: 90px;
@@ -54,7 +53,6 @@ h2 {
     box-shadow: 0 5px 10px rgba(0,0,0,0.4);
 }
 
-/* ကားမှန်ပြတင်းပေါက် */
 .car-design::before {
     content: '';
     position: absolute;
@@ -67,7 +65,6 @@ h2 {
     z-index: 2;
 }
 
-/* ကားရှေ့မီးကြီးများ */
 .car-design::after {
     content: '';
     position: absolute;
@@ -80,7 +77,6 @@ h2 {
     box-shadow: 30px 0 0 #fffb00;
 }
 
-/* ဘီးများ */
 .wheels {
     position: absolute;
     width: 6px;
@@ -93,21 +89,52 @@ h2 {
     z-index: 1;
 }
 
-/* ကားအရောင်များ */
 .car1 { background: linear-gradient(to bottom, #4facfe, #00f2fe); }
 .car2 { background: linear-gradient(to bottom, #ff8c00, #fff700); }
 .car3 { background: linear-gradient(to bottom, #e100ff, #7f00ff); }
 
-/* ရန်သူ့ကားဒီဇိုင်း (ပြောင်းပြန်လှည့်ထားသည်) */
 .enemy {
     background: linear-gradient(to bottom, #ff4444, #990000);
-    transform: rotate(180deg); /* မျက်နှာချင်းဆိုင်လာရန် */
+    transform: rotate(180deg);
 }
 
-.controls {
-    margin-top: 10px;
+/* 🛡️ Shield ကာကွယ်မှုရနေချိန် ပတ်ပတ်လည် အလင်းဝိုင်း */
+.has-shield {
+    box-shadow: 0 0 20px #00f2fe, 0 0 40px #00f2fe !important;
+    border: 2px solid #00f2fe;
 }
 
+/* 🚀 Boost ရနေချိန် မီးတောက်အလင်း */
+.has-boost {
+    box-shadow: 0 0 20px #00ff87, 0 0 40px #00ff87 !important;
+}
+
+/* Power Up ပစ္စည်းများ */
+.powerup {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: -50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 0 10px #fff;
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(0.9); }
+    to { transform: scale(1.1); }
+}
+
+.p-shield { background: #00f2fe; border: 2px solid #fff; }
+.p-boost { background: #00ff87; border: 2px solid #fff; }
+
+/* Controls */
+.controls { margin-top: 10px; }
 button.btn-ctrl {
     font-size: 20px;
     padding: 12px 25px;
@@ -125,7 +152,7 @@ button.btn-ctrl:active {
     transform: translateY(3px);
 }
 
-/* ဆိုင်ခန်း UI */
+/* Shop */
 .shop-container {
     max-width: 400px;
     margin: 20px auto;
@@ -177,7 +204,10 @@ button.btn-ctrl:active {
     🪙 Coins: <span id="coins" style="color: #ffd700; font-weight:bold;">0</span> | 
     Level: <span id="level" style="color: #60efff; font-weight:bold;">1</span>
 </div>
-<p style="margin: 5px;">🏆 High Score: <span id="highScore">0</span></p>
+<p style="margin: 5px;">
+    🏆 High Score: <span id="highScore">0</span> 
+    <span id="power-status" style="margin-left:15px; font-weight:bold; color:#00f2fe;"></span>
+</p>
 
 <div id="game">
     <div id="player" class="car-design car1" style="bottom: 20px;">
@@ -193,7 +223,6 @@ button.btn-ctrl:active {
 
 <div class="shop-container">
     <h3>🛒 Car Shop (ကားအရောင်းဆိုင်)</h3>
-    
     <div class="shop-item">
         <div>
             <div class="preview-car car1"></div>
@@ -201,7 +230,6 @@ button.btn-ctrl:active {
         </div>
         <button id="shop-btn-1" class="btn-shop equip" onclick="buyOrEquip(1)">Equipped</button>
     </div>
-
     <div class="shop-item">
         <div>
             <div class="preview-car car2"></div>
@@ -210,7 +238,6 @@ button.btn-ctrl:active {
         <span style="color: #ffd700;" id="price-2">🪙 15</span>
         <button id="shop-btn-2" class="btn-shop locked" onclick="buyOrEquip(2)">Buy</button>
     </div>
-
     <div class="shop-item">
         <div>
             <div class="preview-car car3"></div>
@@ -223,6 +250,8 @@ button.btn-ctrl:active {
 
 <script>
 const player = document.getElementById("player");
+const gameArea = document.getElementById("game");
+const powerStatus = document.getElementById("power-status");
 
 let score = 0;
 let coins = parseInt(localStorage.getItem("gameCoins")) || 0;
@@ -232,6 +261,10 @@ let gamePaused = false;
 let gameOver = false;
 let highScore = localStorage.getItem("highScore") || 0;
 
+// Power-Up States
+let isShielded = false;
+let isBoosted = false;
+
 document.getElementById("highScore").innerText = highScore;
 document.getElementById("coins").innerText = coins;
 
@@ -239,7 +272,6 @@ let lanes = [25, 125, 225];
 let currentLane = 1;
 player.style.left = lanes[currentLane] + "px";
 
-// Shop Data (Local Storage)
 let carOwnership = JSON.parse(localStorage.getItem("carOwnership")) || { 1: true, 2: false, 3: false };
 let activeCar = parseInt(localStorage.getItem("activeCar")) || 1;
 let carPrices = { 1: 0, 2: 15, 3: 30 };
@@ -264,7 +296,6 @@ function pauseGame(){
     document.getElementById("pauseBtn").innerText = gamePaused ? "▶️ Resume" : "⏸ Pause";
 }
 
-// Shop Logic
 function buyOrEquip(type) {
     if (carOwnership[type]) {
         activeCar = type;
@@ -291,17 +322,17 @@ function buyOrEquip(type) {
 }
 
 function updatePlayerCar() {
-    // class တွေအကုန်ဖြုတ်ပြီး ပုံစံအသစ်ပြန်ထည့်တာကြောင့် ဘီးတွေပျောက်မသွားအောင် လုပ်ထားပါတယ်
     player.className = "car-design car" + activeCar;
+    if(isShielded) player.classList.add("has-shield");
+    if(isBoosted) player.classList.add("has-boost");
 }
 
 function updateShopUI() {
     for (let i = 1; i <= 3; i++) {
         let btn = document.getElementById("shop-btn-" + i);
         let priceTag = document.getElementById("price-" + i);
-        
         if (carOwnership[i]) {
-            if(priceTag) priceTag.style.opacity = '0'; // ဝယ်ပြီးရင် ဈေးနှုန်းဖျောက်မယ်
+            if(priceTag) priceTag.style.opacity = '0';
             if (activeCar === i) {
                 btn.innerText = "Equipped";
                 btn.className = "btn-shop equip";
@@ -316,59 +347,135 @@ function updateShopUI() {
     }
 }
 
-// ရန်သူ့ကား ထွက်လာစေခြင်း
+// ရန်သူ့ကား စနစ်
 function createEnemy(){
     if(gamePaused || gameOver) return; 
 
     const enemy = document.createElement("div");
     enemy.className = "car-design enemy";
-    
-    // ရန်သူ့ကားအတွက် ဘီးထည့်ပေးခြင်း
     const wheels = document.createElement("div");
     wheels.className = "wheels";
     enemy.appendChild(wheels);
 
     let lane = Math.floor(Math.random() * 3);
     enemy.style.left = lanes[lane] + "px";
-    document.getElementById("game").appendChild(enemy);
+    gameArea.appendChild(enemy);
 
     let y = -100;
 
     let move = setInterval(function(){
-        if(gameOver) {
-            clearInterval(move);
-            enemy.remove();
-            return;
-        }
+        if(gameOver) { clearInterval(move); enemy.remove(); return; }
         if(gamePaused) return; 
 
         y += enemySpeed;
         enemy.style.top = y + "px";
 
-        // တိကျသော Collision Detection (ကားအမြင့် 90px၊ Game အမြင့် 500px ဖြစ်ပြီး ကစားသမားက bottom: 20px မှာရှိလို့ top က 390px ဖြစ်ပါတယ်)
+        // Collision Check
         if(y + 90 > 390 && y < 480 && lane === currentLane){
+            if(isShielded) {
+                // ဒိုင်းရှိရင် မသေပါ၊ ဒိုင်းပဲကွဲသွားမယ်
+                isShielded = false;
+                player.classList.remove("has-shield");
+                powerStatus.innerText = "";
+                enemy.remove();
+                clearInterval(move);
+                return;
+            }
+            
             gameOver = true;
             clearInterval(move);
-            localStorage.setItem("gameCoins", coins); // Coin အဟောင်းကို သေချာသိမ်းမယ်
-            
+            localStorage.setItem("gameCoins", coins);
             setTimeout(() => {
                 alert("💥 Game Over! Your Score: " + score);
                 location.reload();
             }, 10);
         }
 
-        if(y > 500){
-            enemy.remove();
-            clearInterval(move);
-        }
+        if(y > 500){ enemy.remove(); clearInterval(move); }
     }, 20);
 }
 
-// ရမှတ်နှင့် Coin တိုးပေးသည့် စနစ်
+// Power Ups ပစ္စည်းများ ထွက်လာစေခြင်း
+function spawnPowerUp() {
+    if(gamePaused || gameOver) return;
+
+    // ၄၀ ရာခိုင်နှုန်းပဲ ပစ္စည်းကျဖို့ Chance ထားပါတယ်
+    if(Math.random() > 0.4) return;
+
+    const pUp = document.createElement("div");
+    let type = Math.random() > 0.5 ? "shield" : "boost";
+    
+    pUp.className = "powerup " + (type === "shield" ? "p-shield" : "p-boost");
+    pUp.innerText = type === "shield" ? "🛡️" : "⚡";
+    
+    let lane = Math.floor(Math.random() * 3);
+    pUp.style.left = (lanes[lane] + 10) + "px"; // အလယ်တည့်တည့်ကျအောင် +10 လုပ်ထားတယ်
+    gameArea.appendChild(pUp);
+
+    let y = -50;
+    let movePUp = setInterval(function() {
+        if(gameOver) { clearInterval(movePUp); pUp.remove(); return; }
+        if(gamePaused) return;
+
+        y += 6; // Power up ကျလာမယ့် အရှိန်
+        pUp.style.top = y + "px";
+
+        // ကစားသမားနဲ့ ကောက်မိမလား စစ်ခြင်း
+        if(y + 30 > 390 && y < 480 && lane === currentLane) {
+            clearInterval(movePUp);
+            pUp.remove();
+            activatePowerUp(type);
+        }
+
+        if(y > 500) { clearInterval(movePUp); pUp.remove(); }
+    }, 20);
+}
+
+// Power Up စွမ်းရည် စတင်အသုံးပြုခြင်း
+function activatePowerUp(type) {
+    if(type === "shield") {
+        isShielded = true;
+        isBoosted = false;
+        player.classList.remove("has-boost");
+        player.classList.add("has-shield");
+        powerStatus.innerText = "🛡️ Shield Active (5s)";
+        powerStatus.style.color = "#00f2fe";
+        
+        setTimeout(() => {
+            if(isShielded) {
+                isShielded = false;
+                player.classList.remove("has-shield");
+                powerStatus.innerText = "";
+            }
+        }, 5000); // ၅ စက္ကန့် ခံမယ်
+    } else {
+        isBoosted = true;
+        isShielded = false;
+        player.classList.remove("has-shield");
+        player.classList.add("has-boost");
+        powerStatus.innerText = "🚀 Boost Active (3s)";
+        powerStatus.style.color = "#00ff87";
+        
+        setTimeout(() => {
+            if(isBoosted) {
+                isBoosted = false;
+                player.classList.remove("has-boost");
+                powerStatus.innerText = "";
+            }
+        }, 3000); // ၃ စက္ကန့် ခံမယ်
+    }
+}
+
+// ရမှတ်နှင့် Level တွက်ချက်ခြင်း စနစ်
 setInterval(function(){
     if(gamePaused || gameOver) return;
 
-    score++;
+    // Boost ရနေရင် ရမှတ် ၅ ဆ ပိုတက်မယ်
+    if(isBoosted) {
+        score += 5;
+    } else {
+        score++;
+    }
 
     if(score % 10 === 0){
         coins++;
@@ -383,7 +490,6 @@ setInterval(function(){
         localStorage.setItem("highScore", highScore);
     }
     
-    // Level အလိုက် အမြန်နှုန်း တိုးမြှင့်ခြင်း
     if(score >= 50) { level = 2; enemySpeed = 7; }
     if(score >= 100) { level = 3; enemySpeed = 9; }
     if(score >= 200) { level = 4; enemySpeed = 12; }
@@ -394,10 +500,17 @@ setInterval(function(){
 
 }, 1000);
 
-// စတင်ပွင့်ချိန်မှာ Run ပေးမယ့် Function များ
+// ကွန်ပျူတာ Keyboard က မြှားခလုတ်တွေနဲ့ ဆော့လို့ရအောင်ပါ တစ်ခါတည်း ထည့်ပေးထားပါတယ် ⌨️
+window.addEventListener("keydown", function(e) {
+    if(e.key === "ArrowLeft" || e.key === "a" || e.key === "A") moveLeft();
+    if(e.key === "ArrowRight" || e.key === "d" || e.key === "D") moveRight();
+    if(e.key === " ") pauseGame(); // Spacebar နှိပ်ရင် Pause ဖြစ်မယ်
+});
+
 updateShopUI();
 updatePlayerCar();
 setInterval(createEnemy, 1200);
+setInterval(spawnPowerUp, 4000); // ၄ စက္ကန့်တစ်ခါ Item ကျမကျ စစ်မယ်
 </script>
 
 </body>
