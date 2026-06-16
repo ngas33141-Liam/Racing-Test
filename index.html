@@ -192,14 +192,16 @@ button{
 <h2>Level: <span id="level">1</span></h2>
 <h2>High Score: <span id="highScore">0</span></h2>
 
-<div id="game">
-    <div id="player"></div>
-</div>
-
 <div class="controls">
     <button onclick="moveLeft()">⬅️</button>
     <button onclick="moveRight()">➡️</button>
+    <button onclick="pauseGame()">⏸</button>
 </div>
+
+<h3>Choose Car</h3>
+<button onclick="setCar(1)">🚙 Car 1</button>
+<button onclick="setCar(2)">🚕 Car 2</button>
+<button onclick="setCar(3)">🚗 Car 3</button>
 
 <script>
 const player = document.getElementById("player");
@@ -207,7 +209,8 @@ const player = document.getElementById("player");
 let score = 0;
 let coins = 0;
 let level = 1;
-
+let enemySpeed = 5;
+let gamePaused = false;
 let highScore = localStorage.getItem("highScore") || 0;
 
 let lanes = [25, 125, 225];
@@ -229,6 +232,17 @@ function moveRight(){
     }
 }
 
+function createEnemy(){
+function pauseGame(){
+    gamePaused = !gamePaused;
+}
+
+function setCar(type){
+    player.classList.remove("car1","car2","car3");
+    player.classList.add("car"+type);
+}
+
+setCar(1)
 function createEnemy(){
     const enemy = document.createElement("div");
     enemy.className = "enemy";
