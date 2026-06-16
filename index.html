@@ -3,81 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Racing Game</title>
+<title>Racing Game with Shop</title>
 
 <style>
 body {
     margin: 0;
-    background: #222;
-    overflow: hidden;
+    background: #1a1a1a;
+    overflow-x: hidden;
     text-align: center;
     color: white;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+    margin-top: 15px;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.stats-container {
+    background: #333;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 #game {
     width: 300px;
     height: 500px;
-    background: #555;
-    margin: 20px auto;
+    background: #444;
+    /* လမ်းကြောင်းလိုင်းများ ထည့်သွင်းခြင်း */
+    background-image: linear-gradient(90deg, transparent 33%, rgba(255,255,255,0.2) 33%, rgba(255,255,255,0.2) 35%, transparent 35%, transparent 66%, rgba(255,255,255,0.2) 66%, rgba(255,255,255,0.2) 68%, transparent 68%);
+    margin: 10px auto;
     position: relative;
     overflow: hidden;
     border: 4px solid #fff;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
-#player {
+/* ကားများ၏ အခြေခံ ပုံစံတူ ဒီဇိုင်း (Detail ထည့်သွင်းခြင်း) */
+.car-design {
     width: 50px;
     height: 90px;
     position: absolute;
-    bottom: 20px;
-    left: 125px;
-    border-radius: 10px;
-    transition: left 0.1s ease;
-    border: 2px solid white;
+    border-radius: 8px;
+    transition: left 0.15s ease;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
 }
-.car1 { background: linear-gradient(to bottom, #00f2fe, #4facfe); }
-.car2 { background: linear-gradient(to bottom, #fff700, #ff8c00); }
-.car3 { background: linear-gradient(to bottom, #00ff87, #60efff); }
+
+/* ဖန်သားပြင်မှန် */
+.car-design::before {
+    content: '';
+    position: absolute;
+    width: 36px;
+    height: 20px;
+    background: rgba(135, 206, 235, 0.8);
+    left: 7px;
+    top: 25px;
+    border-radius: 3px;
+}
+
+/* ရှေ့မီးကြီးများ */
+.car-design::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 6px;
+    background: #fffb00;
+    left: 6px;
+    top: 2px;
+    border-radius: 2px;
+    box-shadow: 30px 0 0 #fffb00;
+}
+
+/* ဘီးများ တပ်ဆင်ခြင်း */
+.wheels {
+    position: absolute;
+    width: 6px;
+    height: 14px;
+    background: #111;
+    border-radius: 2px;
+    left: -4px;
+    top: 15px;
+    box-shadow: 52px 0 0 #111, 0 50px 0 #111, 52px 50px 0 #111;
+}
+
+/* ကားအရောင် ကွဲပြားမှုများ */
+.car1 { background: linear-gradient(to bottom, #4facfe, #00f2fe); }
+.car2 { background: linear-gradient(to bottom, #ff8c00, #fff700); }
+.car3 { background: linear-gradient(to bottom, #e100ff, #7f00ff); }
+
 .enemy {
-    width: 50px;
-    height: 90px;
-    position: absolute;
-    top: -100px;
-    border-radius: 10px;
-    border: 2px solid white;
-    box-shadow: 0 0 10px red;
     background: linear-gradient(to bottom, #ff4444, #990000);
+    top: -100px;
 }
+/* ရန်သူ့ကား ရှေ့မီးနီနှင့် နောက်မှန် */
+.enemy::before { background: rgba(0, 0, 0, 0.6); top: 45px; }
+.enemy::after { background: #ff3300; top: 82px; box-shadow: 30px 0 0 #ff3300; }
 
-.enemy::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 25px;
-    background: #87ceeb;
-    left: 15px;
-    top: 10px;
-    border-radius: 5px;
-}
-
-.enemy::after {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 10px;
-    background: #333;
-    left: 10px;
-    bottom: 10px;
-    border-radius: 5px;
-}
 .controls {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
-button {
+button.btn-ctrl {
     font-size: 20px;
-    padding: 10px 20px;
+    padding: 12px 25px;
     margin: 5px;
     border: none;
     border-radius: 10px;
@@ -85,50 +118,127 @@ button {
     background-color: #fff;
     color: #222;
     font-weight: bold;
+    box-shadow: 0 4px #999;
+}
+button.btn-ctrl:active {
+    box-shadow: 0 1px #666;
+    transform: translateY(3px);
 }
 
-button:hover {
-    background-color: #ddd;
+/* Shop UI */
+.shop-container {
+    max-width: 400px;
+    margin: 20px auto;
+    background: #2a2a2a;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #444;
 }
+.shop-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #3a3a3a;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+}
+.preview-car {
+    width: 30px;
+    height: 50px;
+    border-radius: 5px;
+    position: relative;
+    display: inline-block;
+}
+.preview-car::before {
+    content: ''; position: absolute; width: 20px; height: 10px;
+    background: rgba(255,255,255,0.5); left: 5px; top: 15px; border-radius: 2px;
+}
+.btn-shop {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.owned { background-color: #4CAF50; color: white; }
+.equip { background-color: #008CBA; color: white; }
+.locked { background-color: #f44336; color: white; }
 </style>
 </head>
 
 <body>
 
-<h2>🚗 Racing Game</h2>
-<p>Score: <span id="score">0</span> | Coins: <span id="coins">0</span> | Level: <span id="level">1</span></p>
-<p>High Score: <span id="highScore">0</span></p>
+<h2> 🚗 Super Racing Game </h2>
+<div class="stats-container">
+    Score: <span id="score" style="color: #00ff87; font-weight:bold;">0</span> | 
+    🪙 Coins: <span id="coins" style="color: #ffd700; font-weight:bold;">0</span> | 
+    Level: <span id="level" style="color: #60efff; font-weight:bold;">1</span>
+</div>
+<p style="margin: 5px;">🏆 High Score: <span id="highScore">0</span></p>
 
 <div id="game">
-    <div id="player" class="car1"></div>
+    <div id="player" class="car-design car1">
+        <div class="wheels"></div>
+    </div>
 </div>
 
 <div class="controls">
-    <button onclick="moveLeft()">⬅️</button>
-    <button onclick="pauseGame()">⏸ Pause</button>
-    <button onclick="moveRight()">➡️</button>
+    <button class="btn-ctrl" onclick="moveLeft()">⬅️</button>
+    <button class="btn-ctrl" onclick="pauseGame()" id="pauseBtn">⏸ Pause</button>
+    <button class="btn-ctrl" onclick="moveRight()">➡️</button>
 </div>
 
-<h3>Choose Car</h3>
-<button onclick="setCar(1)">🚙 Car 1</button>
-<button onclick="setCar(2)">🚕 Car 2</button>
-<button onclick="setCar(3)">🚗 Car 3</button>
+<div class="shop-container">
+    <h3>🛒 Car Shop (ကားအရောင်းဆိုင်)</h3>
+    
+    <div class="shop-item">
+        <div>
+            <div class="preview-car car1"></div>
+            <span style="margin-left: 10px;">Classic Blue (အပြာရောင်)</span>
+        </div>
+        <button id="shop-btn-1" class="btn-shop equip" onclick="buyOrEquip(1)">Equipped</button>
+    </div>
+
+    <div class="shop-item">
+        <div>
+            <div class="preview-car car2"></div>
+            <span style="margin-left: 10px;">Fire Orange (လိမ္မော်ရောင်)</span>
+        </div>
+        <span style="color: #ffd700;" id="price-2">🪙 15</span>
+        <button id="shop-btn-2" class="btn-shop locked" onclick="buyOrEquip(2)">Buy</button>
+    </div>
+
+    <div class="shop-item">
+        <div>
+            <div class="preview-car car3"></div>
+            <span style="margin-left: 10px;">Neon Purple (ခရမ်းရောင်)</span>
+        </div>
+        <span style="color: #ffd700;" id="price-3">🪙 30</span>
+        <button id="shop-btn-3" class="btn-shop locked" onclick="buyOrEquip(3)">Buy</button>
+    </div>
+</div>
 
 <script>
 const player = document.getElementById("player");
 
 let score = 0;
-let coins = 0;
+let coins = parseInt(localStorage.getItem("gameCoins")) || 0;
 let level = 1;
 let enemySpeed = 5;
 let gamePaused = false;
 let highScore = localStorage.getItem("highScore") || 0;
+
 document.getElementById("highScore").innerText = highScore;
+document.getElementById("coins").innerText = coins;
 
 let lanes = [25, 125, 225];
 let currentLane = 1;
-
 player.style.left = lanes[currentLane] + "px";
+
+let carOwnership = JSON.parse(localStorage.getItem("carOwnership")) || { 1: true, 2: false, 3: false };
+let activeCar = parseInt(localStorage.getItem("activeCar")) || 1;
+let carPrices = { 1: 0, 2: 15, 3: 30 };
 
 function moveLeft(){
     if(!gamePaused && currentLane > 0){
@@ -146,18 +256,70 @@ function moveRight(){
 
 function pauseGame(){
     gamePaused = !gamePaused;
+    document.getElementById("pauseBtn").innerText = gamePaused ? "▶️ Resume" : "⏸ Pause";
 }
 
-function setCar(type){
-    player.className = ""; 
-    player.classList.add("car" + type);
+function buyOrEquip(type) {
+    if (carOwnership[type]) {
+        
+        activeCar = type;
+        localStorage.setItem("activeCar", activeCar);
+        updateShopUI();
+        updatePlayerCar();
+    } else {
+        
+        if (coins >= carPrices[type]) {
+            coins -= carPrices[type];
+            carOwnership[type] = true;
+            localStorage.setItem("gameCoins", coins);
+            localStorage.setItem("carOwnership", JSON.stringify(carOwnership));
+            activeCar = type;
+            localStorage.setItem("activeCar", activeCar);
+            
+            document.getElementById("coins").innerText = coins;
+            updateShopUI();
+            updatePlayerCar();
+            alert("🎉 ကားအသစ် ဝယ်ယူအောင်မြင်ပါသည်!");
+        } else {
+            alert("အမယ် အလကား‌ မပေးနိုင်ပါပူး လိုချင်ရင် Gameဆော့ပီး Coin ရှာ");
+        }
+    }
+}
+
+function updatePlayerCar() {
+    player.className = "car-design car" + activeCar;
+}
+
+function updateShopUI() {
+    for (let i = 1; i <= 3; i++) {
+        let btn = document.getElementById("shop-btn-" + i);
+        let priceTag = document.getElementById("price-" + i);
+        
+        if (carOwnership[i]) {
+            if(priceTag) priceTag.style.display = 'none';
+            if (activeCar === i) {
+                btn.innerText = "Equipped";
+                btn.className = "btn-shop equip";
+            } else {
+                btn.innerText = "Use";
+                btn.className = "btn-shop owned";
+            }
+        } else {
+            btn.innerText = "Buy";
+            btn.className = "btn-shop locked";
+        }
+    }
 }
 
 function createEnemy(){
     if(gamePaused) return; 
 
     const enemy = document.createElement("div");
-    enemy.className = "enemy";
+    enemy.className = "car-design enemy";
+    
+    const wheels = document.createElement("div");
+    wheels.className = "wheels";
+    enemy.appendChild(wheels);
 
     let lane = Math.floor(Math.random()*3);
     enemy.style.left = lanes[lane] + "px";
@@ -172,8 +334,11 @@ function createEnemy(){
         y += enemySpeed;
         enemy.style.top = y + "px";
 
-        if(y + 90 > 390 && y < 480 && lane === currentLane){
+
+        if(y + 85 > 390 && y < 480 && lane === currentLane){
             clearInterval(move);
+        
+            localStorage.setItem("gameCoins", coins);
             alert("💥 Game Over! Your Score: " + score);
             location.reload();
         }
@@ -193,6 +358,7 @@ setInterval(function(){
     if(score % 10 === 0){
         coins++;
         document.getElementById("coins").innerText = coins;
+        localStorage.setItem("gameCoins", coins);
     }
 
     document.getElementById("score").innerText = score;
@@ -211,10 +377,10 @@ setInterval(function(){
     document.getElementById("highScore").innerText = highScore;
 
 }, 1000);
-
+updateShopUI();
+updatePlayerCar();
 setInterval(createEnemy, 1200);
 </script>
 
 </body>
 </html>
-
