@@ -43,7 +43,6 @@ h2 {
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
-/* ကားဒီဇိုင်းများ */
 .car-design {
     width: 50px;
     height: 90px;
@@ -220,8 +219,8 @@ tr:nth-child(even) { background-color: #3a3a3a; }
 const player = document.getElementById("player");
 const gameArea = document.getElementById("game");
 const powerStatus = document.getElementById("power-status");
+const FIREBASE_URL = "https://aikipa-ranking-default-rtdb.firebaseio.com";
 
-// Player Name သတ်မှတ်ခြင်း စနစ်
 let playerName = localStorage.getItem("gamePlayerName");
 if (!playerName) {
     playerName = prompt("Enter your Name (လူကြီးမင်းနာမည် ထည့်ပါ):") || "Guest_Player";
