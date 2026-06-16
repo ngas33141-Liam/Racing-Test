@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Racing Game with Shop</title>
+<title>Super Racing Game</title>
 
 <style>
 body {
@@ -34,7 +34,7 @@ h2 {
     width: 300px;
     height: 500px;
     background: #444;
-    /* လမ်းကြောင်းလိုင်းများ ထည့်သွင်းခြင်း */
+    /* လမ်းမကြီးပေါ်က ဖြူပြာလိုင်းများ */
     background-image: linear-gradient(90deg, transparent 33%, rgba(255,255,255,0.2) 33%, rgba(255,255,255,0.2) 35%, transparent 35%, transparent 66%, rgba(255,255,255,0.2) 66%, rgba(255,255,255,0.2) 68%, transparent 68%);
     margin: 10px auto;
     position: relative;
@@ -44,29 +44,30 @@ h2 {
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 
-/* ကားများ၏ အခြေခံ ပုံစံတူ ဒီဇိုင်း (Detail ထည့်သွင်းခြင်း) */
+/* ကားများ၏ အခြေခံဒီဇိုင်း (Detail) */
 .car-design {
     width: 50px;
     height: 90px;
     position: absolute;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: left 0.15s ease;
     box-shadow: 0 5px 10px rgba(0,0,0,0.4);
 }
 
-/* ဖန်သားပြင်မှန် */
+/* ကားမှန်ပြတင်းပေါက် */
 .car-design::before {
     content: '';
     position: absolute;
     width: 36px;
-    height: 20px;
-    background: rgba(135, 206, 235, 0.8);
+    height: 22px;
+    background: rgba(135, 206, 235, 0.85);
     left: 7px;
-    top: 25px;
-    border-radius: 3px;
+    top: 22px;
+    border-radius: 4px;
+    z-index: 2;
 }
 
-/* ရှေ့မီးကြီးများ */
+/* ကားရှေ့မီးကြီးများ */
 .car-design::after {
     content: '';
     position: absolute;
@@ -79,7 +80,7 @@ h2 {
     box-shadow: 30px 0 0 #fffb00;
 }
 
-/* ဘီးများ တပ်ဆင်ခြင်း */
+/* ဘီးများ */
 .wheels {
     position: absolute;
     width: 6px;
@@ -89,20 +90,19 @@ h2 {
     left: -4px;
     top: 15px;
     box-shadow: 52px 0 0 #111, 0 50px 0 #111, 52px 50px 0 #111;
+    z-index: 1;
 }
 
-/* ကားအရောင် ကွဲပြားမှုများ */
+/* ကားအရောင်များ */
 .car1 { background: linear-gradient(to bottom, #4facfe, #00f2fe); }
 .car2 { background: linear-gradient(to bottom, #ff8c00, #fff700); }
 .car3 { background: linear-gradient(to bottom, #e100ff, #7f00ff); }
 
+/* ရန်သူ့ကားဒီဇိုင်း (ပြောင်းပြန်လှည့်ထားသည်) */
 .enemy {
     background: linear-gradient(to bottom, #ff4444, #990000);
-    top: -100px;
+    transform: rotate(180deg); /* မျက်နှာချင်းဆိုင်လာရန် */
 }
-/* ရန်သူ့ကား ရှေ့မီးနီနှင့် နောက်မှန် */
-.enemy::before { background: rgba(0, 0, 0, 0.6); top: 45px; }
-.enemy::after { background: #ff3300; top: 82px; box-shadow: 30px 0 0 #ff3300; }
 
 .controls {
     margin-top: 10px;
@@ -125,7 +125,7 @@ button.btn-ctrl:active {
     transform: translateY(3px);
 }
 
-/* Shop UI */
+/* ဆိုင်ခန်း UI */
 .shop-container {
     max-width: 400px;
     margin: 20px auto;
@@ -149,10 +149,11 @@ button.btn-ctrl:active {
     border-radius: 5px;
     position: relative;
     display: inline-block;
+    vertical-align: middle;
 }
 .preview-car::before {
     content: ''; position: absolute; width: 20px; height: 10px;
-    background: rgba(255,255,255,0.5); left: 5px; top: 15px; border-radius: 2px;
+    background: rgba(255,255,255,0.5); left: 5px; top: 12px; border-radius: 2px;
 }
 .btn-shop {
     padding: 8px 12px;
@@ -160,6 +161,7 @@ button.btn-ctrl:active {
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    min-width: 80px;
 }
 .owned { background-color: #4CAF50; color: white; }
 .equip { background-color: #008CBA; color: white; }
@@ -169,7 +171,7 @@ button.btn-ctrl:active {
 
 <body>
 
-<h2> 🚗 Super Racing Game </h2>
+<h2>🚗 Super Racing Game</h2>
 <div class="stats-container">
     Score: <span id="score" style="color: #00ff87; font-weight:bold;">0</span> | 
     🪙 Coins: <span id="coins" style="color: #ffd700; font-weight:bold;">0</span> | 
@@ -178,7 +180,7 @@ button.btn-ctrl:active {
 <p style="margin: 5px;">🏆 High Score: <span id="highScore">0</span></p>
 
 <div id="game">
-    <div id="player" class="car-design car1">
+    <div id="player" class="car-design car1" style="bottom: 20px;">
         <div class="wheels"></div>
     </div>
 </div>
@@ -195,7 +197,7 @@ button.btn-ctrl:active {
     <div class="shop-item">
         <div>
             <div class="preview-car car1"></div>
-            <span style="margin-left: 10px;">Classic Blue (အပြာရောင်)</span>
+            <span style="margin-left: 10px;">Classic Blue</span>
         </div>
         <button id="shop-btn-1" class="btn-shop equip" onclick="buyOrEquip(1)">Equipped</button>
     </div>
@@ -203,7 +205,7 @@ button.btn-ctrl:active {
     <div class="shop-item">
         <div>
             <div class="preview-car car2"></div>
-            <span style="margin-left: 10px;">Fire Orange (လိမ္မော်ရောင်)</span>
+            <span style="margin-left: 10px;">Fire Orange</span>
         </div>
         <span style="color: #ffd700;" id="price-2">🪙 15</span>
         <button id="shop-btn-2" class="btn-shop locked" onclick="buyOrEquip(2)">Buy</button>
@@ -212,7 +214,7 @@ button.btn-ctrl:active {
     <div class="shop-item">
         <div>
             <div class="preview-car car3"></div>
-            <span style="margin-left: 10px;">Neon Purple (ခရမ်းရောင်)</span>
+            <span style="margin-left: 10px;">Neon Purple</span>
         </div>
         <span style="color: #ffd700;" id="price-3">🪙 30</span>
         <button id="shop-btn-3" class="btn-shop locked" onclick="buyOrEquip(3)">Buy</button>
@@ -227,6 +229,7 @@ let coins = parseInt(localStorage.getItem("gameCoins")) || 0;
 let level = 1;
 let enemySpeed = 5;
 let gamePaused = false;
+let gameOver = false;
 let highScore = localStorage.getItem("highScore") || 0;
 
 document.getElementById("highScore").innerText = highScore;
@@ -236,38 +239,39 @@ let lanes = [25, 125, 225];
 let currentLane = 1;
 player.style.left = lanes[currentLane] + "px";
 
+// Shop Data (Local Storage)
 let carOwnership = JSON.parse(localStorage.getItem("carOwnership")) || { 1: true, 2: false, 3: false };
 let activeCar = parseInt(localStorage.getItem("activeCar")) || 1;
 let carPrices = { 1: 0, 2: 15, 3: 30 };
 
 function moveLeft(){
-    if(!gamePaused && currentLane > 0){
+    if(!gamePaused && !gameOver && currentLane > 0){
         currentLane--;
         player.style.left = lanes[currentLane] + "px";
     }
 }
 
 function moveRight(){
-    if(!gamePaused && currentLane < 2){
+    if(!gamePaused && !gameOver && currentLane < 2){
         currentLane++;
         player.style.left = lanes[currentLane] + "px";
     }
 }
 
 function pauseGame(){
+    if(gameOver) return;
     gamePaused = !gamePaused;
     document.getElementById("pauseBtn").innerText = gamePaused ? "▶️ Resume" : "⏸ Pause";
 }
 
+// Shop Logic
 function buyOrEquip(type) {
     if (carOwnership[type]) {
-        
         activeCar = type;
         localStorage.setItem("activeCar", activeCar);
         updateShopUI();
         updatePlayerCar();
     } else {
-        
         if (coins >= carPrices[type]) {
             coins -= carPrices[type];
             carOwnership[type] = true;
@@ -279,14 +283,15 @@ function buyOrEquip(type) {
             document.getElementById("coins").innerText = coins;
             updateShopUI();
             updatePlayerCar();
-            alert("🎉 ကားအသစ် ဝယ်ယူအောင်မြင်ပါသည်!");
+            alert("🎉 ကားဝယ်ယူမှု အောင်မြင်ပါသည်။");
         } else {
-            alert("အမယ် အလကား‌ မပေးနိုင်ပါပူး လိုချင်ရင် Gameဆော့ပီး Coin ရှာ");
+            alert("❌ Coin မလုံလောက်သေးပါ!");
         }
     }
 }
 
 function updatePlayerCar() {
+    // class တွေအကုန်ဖြုတ်ပြီး ပုံစံအသစ်ပြန်ထည့်တာကြောင့် ဘီးတွေပျောက်မသွားအောင် လုပ်ထားပါတယ်
     player.className = "car-design car" + activeCar;
 }
 
@@ -296,7 +301,7 @@ function updateShopUI() {
         let priceTag = document.getElementById("price-" + i);
         
         if (carOwnership[i]) {
-            if(priceTag) priceTag.style.display = 'none';
+            if(priceTag) priceTag.style.opacity = '0'; // ဝယ်ပြီးရင် ဈေးနှုန်းဖျောက်မယ်
             if (activeCar === i) {
                 btn.innerText = "Equipped";
                 btn.className = "btn-shop equip";
@@ -311,36 +316,45 @@ function updateShopUI() {
     }
 }
 
+// ရန်သူ့ကား ထွက်လာစေခြင်း
 function createEnemy(){
-    if(gamePaused) return; 
+    if(gamePaused || gameOver) return; 
 
     const enemy = document.createElement("div");
     enemy.className = "car-design enemy";
     
+    // ရန်သူ့ကားအတွက် ဘီးထည့်ပေးခြင်း
     const wheels = document.createElement("div");
     wheels.className = "wheels";
     enemy.appendChild(wheels);
 
-    let lane = Math.floor(Math.random()*3);
+    let lane = Math.floor(Math.random() * 3);
     enemy.style.left = lanes[lane] + "px";
-
     document.getElementById("game").appendChild(enemy);
 
     let y = -100;
 
     let move = setInterval(function(){
+        if(gameOver) {
+            clearInterval(move);
+            enemy.remove();
+            return;
+        }
         if(gamePaused) return; 
 
         y += enemySpeed;
         enemy.style.top = y + "px";
 
-
-        if(y + 85 > 390 && y < 480 && lane === currentLane){
+        // တိကျသော Collision Detection (ကားအမြင့် 90px၊ Game အမြင့် 500px ဖြစ်ပြီး ကစားသမားက bottom: 20px မှာရှိလို့ top က 390px ဖြစ်ပါတယ်)
+        if(y + 90 > 390 && y < 480 && lane === currentLane){
+            gameOver = true;
             clearInterval(move);
-        
-            localStorage.setItem("gameCoins", coins);
-            alert("💥 Game Over! Your Score: " + score);
-            location.reload();
+            localStorage.setItem("gameCoins", coins); // Coin အဟောင်းကို သေချာသိမ်းမယ်
+            
+            setTimeout(() => {
+                alert("💥 Game Over! Your Score: " + score);
+                location.reload();
+            }, 10);
         }
 
         if(y > 500){
@@ -350,8 +364,9 @@ function createEnemy(){
     }, 20);
 }
 
+// ရမှတ်နှင့် Coin တိုးပေးသည့် စနစ်
 setInterval(function(){
-    if(gamePaused) return;
+    if(gamePaused || gameOver) return;
 
     score++;
 
@@ -368,6 +383,7 @@ setInterval(function(){
         localStorage.setItem("highScore", highScore);
     }
     
+    // Level အလိုက် အမြန်နှုန်း တိုးမြှင့်ခြင်း
     if(score >= 50) { level = 2; enemySpeed = 7; }
     if(score >= 100) { level = 3; enemySpeed = 9; }
     if(score >= 200) { level = 4; enemySpeed = 12; }
@@ -377,6 +393,8 @@ setInterval(function(){
     document.getElementById("highScore").innerText = highScore;
 
 }, 1000);
+
+// စတင်ပွင့်ချိန်မှာ Run ပေးမယ့် Function များ
 updateShopUI();
 updatePlayerCar();
 setInterval(createEnemy, 1200);
@@ -384,3 +402,4 @@ setInterval(createEnemy, 1200);
 
 </body>
 </html>
+
